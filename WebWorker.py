@@ -22,7 +22,6 @@ class WebWorker:
         results = {}
         for u in self.url_list:
             delay = self.__get_delay_time()
-            print 'Delay for ' + u + ' is ' + str(delay) + ' seconds.'
             sleep(delay)
             start_time = time.clock()
             request = urllib2.Request(u, None, headers)
@@ -48,7 +47,7 @@ class WebWorker:
         #get a delta between 0 and the alpha value
         time_delta = random_float * self.a
         #if the random number is even, increase alpa by delta
-        if random_float % 2 == 0:
+        if random_float > 0.5:
             alpha = self.a + time_delta
         else: #decrease alpha by delta
             alpha = self.a - time_delta
