@@ -4,6 +4,7 @@ Created on Sun Apr 22 15:55:01 2018
 
 @author: Ben Snell
 """
+import WebWorker
 
 class URL_Data(WebWorker):
     

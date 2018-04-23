@@ -6,6 +6,7 @@ Created on Wed Apr 18 20:15:24 2018
 """
 import urllib2
 import random
+import time
 from time import sleep
 
 class WebWorker:
@@ -16,10 +17,11 @@ class WebWorker:
         self.a = alpha
         random.seed(None)
     
-    def __start_web_requests(self):
+    def start_web_requests(self):
         headers = {'User-Agent':self.user_agent}
         for u in self.url_list:
-            delay = self.get_delay_time()
+            start_time = time.clock()
+            delay = self.__get_delay_time()
             sleep(delay)
             request = urllib2.Request(u, None, headers)
             try:
@@ -32,15 +34,17 @@ class WebWorker:
                     print 'The server could not fulfill the request.'
                     print 'Error code: ',e.code
             else:
-                print 'Success'        
+                stop_time = time.clock()
+                elapsed_time = stop_time - start_time
+                print "Retrieved " + u + " in " + str(elapsed_time) + " seconds."       
             page = response.read()
             #print page
     
     def __get_delay_time(self):
         #get a random number between 0 and 1
-        random_float = random()
+        random_float = random.random()
         #get a delta between 0 and the alpha value
-        time_delta = random_float * self.ab
+        time_delta = random_float * self.a
         #if the random number is even, increase alpa by delta
         if random_float % 2 == 0:
             alpha = self.a + time_delta
