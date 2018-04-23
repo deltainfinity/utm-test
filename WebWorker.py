@@ -19,10 +19,12 @@ class WebWorker:
     
     def start_web_requests(self):
         headers = {'User-Agent':self.user_agent}
+        results = {}
         for u in self.url_list:
-            start_time = time.clock()
             delay = self.__get_delay_time()
+            print 'Delay for ' + u + ' is ' + str(delay) + ' seconds.'
             sleep(delay)
+            start_time = time.clock()
             request = urllib2.Request(u, None, headers)
             try:
                 response = urllib2.urlopen(request)
@@ -34,11 +36,11 @@ class WebWorker:
                     print 'The server could not fulfill the request.'
                     print 'Error code: ',e.code
             else:
+                page = response.read()
                 stop_time = time.clock()
                 elapsed_time = stop_time - start_time
-                print "Retrieved " + u + " in " + str(elapsed_time) + " seconds."       
-            page = response.read()
-            #print page
+                results.update({u:elapsed_time})
+        return results
     
     def __get_delay_time(self):
         #get a random number between 0 and 1
